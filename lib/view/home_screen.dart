@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/res/constant/app_colors.dart';
 import 'package:todo_app/res/constant/app_string.dart';
-import 'package:todo_app/view/todo_enter_data.dart';
-import 'package:todo_app/view/todo_tile.dart';
+import 'package:todo_app/view/to_do_enter_data.dart';
+import 'package:todo_app/view/to_do_tile.dart';
 
 import '../data/model/to_do_model.dart';
 
