@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_app/res/constant/app_colors.dart';
 import 'package:todo_app/res/constant/app_string.dart';
 import 'package:todo_app/view/todo_enter_data.dart';
 import 'package:todo_app/view/todo_tile.dart';
@@ -61,13 +62,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
-        title: Text(AppString.homePageTitle),
+        centerTitle: true,
+        title: const Text(AppString.homePageTitle),
+        leading: const Icon(Icons.menu),
       ),
       body: toDoModel.isEmpty
-          ? Center(
+          ? const Center(
               child: Text(
                 "No Data Found",
                 style: TextStyle(
@@ -83,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return ToDoTile(
                   title: toDoModel[index].title,
                   time: toDoModel[index].time,
-                  description: toDoModel[index].discription,
+                  description: toDoModel[index].description,
                   count: (index + 1).toString(),
                   onEdit: () {
                     Navigator.push(
@@ -98,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       getData();
                     });
                   },
-                  onDelet: () {
+                  onDelete: () {
                     toDoModel.removeAt(index);
                     setState(() {});
                     setData();
@@ -111,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.materialColor,
         onPressed: () {
           Navigator.push(
             context,
@@ -122,10 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
             getData();
           });
         },
-        child: Icon(Icons.navigate_next_rounded),
+        child: const Icon(Icons.add, size: 30),
       ),
       backgroundColor: Colors.white,
-      drawer: Drawer(),
     );
   }
 }

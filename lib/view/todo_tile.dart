@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/res/constant/app_colors.dart';
 
 class ToDoTile extends StatelessWidget {
   final String? title;
@@ -6,7 +7,7 @@ class ToDoTile extends StatelessWidget {
   final String? description;
   final String? count;
   final void Function()? onEdit;
-  final void Function()? onDelet;
+  final void Function()? onDelete;
 
   const ToDoTile({
     Key? key,
@@ -15,7 +16,7 @@ class ToDoTile extends StatelessWidget {
     this.description,
     this.count,
     this.onEdit,
-    this.onDelet,
+    this.onDelete,
   }) : super(
           key: key,
         );
@@ -37,7 +38,7 @@ class ToDoTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 width: 1,
-                color: const Color(0xB000000),
+                color: AppColors.materialColor,
                 style: BorderStyle.solid,
               ),
               boxShadow: const [
@@ -53,10 +54,10 @@ class ToDoTile extends StatelessWidget {
                 ClipRect(
                   clipBehavior: Clip.antiAlias,
                   child: Container(
-                    height: MediaQuery.of(context).size.height / 15,
                     width: MediaQuery.of(context).size.width / 7,
                     decoration: BoxDecoration(
                       color: Colors.black12,
+                      border: Border.all(color: AppColors.materialColor, width: 2),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Center(
@@ -114,15 +115,13 @@ class ToDoTile extends StatelessWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                  onPressed: onDelet,
-                  icon: const Icon(Icons.delete_outline_outlined),
-                ),
-                SizedBox(width: MediaQuery.of(context).size.width / 25),
-                IconButton(
                   onPressed: onEdit,
-                  icon: const Icon(Icons.edit),
+                  icon: const Icon(Icons.edit, color: AppColors.green),
                 ),
-                SizedBox(width: MediaQuery.of(context).size.width / 20),
+                IconButton(
+                  onPressed: onDelete,
+                  icon: const Icon(Icons.delete, color: AppColors.red),
+                ),
               ],
             ),
           ),

@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/res/common/app_text_field.dart';
+import 'package:todo_app/res/constant/app_colors.dart';
 import 'package:todo_app/res/constant/app_string.dart';
+import 'package:todo_app/res/extensions/extensions.dart';
 
 import '../data/model/to_do_model.dart';
 
@@ -20,8 +22,10 @@ class TodoEnterData extends StatefulWidget {
 }
 
 class _TodoEnterDataState extends State<TodoEnterData> {
-  TextEditingController titlecontroller = TextEditingController();
-  TextEditingController discriptioncontroller = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   String time = "";
 
   SharedPreferences? sharedPreferences;
@@ -41,10 +45,10 @@ class _TodoEnterDataState extends State<TodoEnterData> {
     }
   }
 
-  setdata() {
+  setData() {
     Map<String, dynamic> data = {
-      "title": titlecontroller.text,
-      "discription": discriptioncontroller.text,
+      "title": titleController.text,
+      "description": descriptionController.text,
       "time": time,
     };
     if (widget.toDoModel != null) {
@@ -53,7 +57,6 @@ class _TodoEnterDataState extends State<TodoEnterData> {
       toDoList.add(jsonEncode(data));
     }
 
-    // debugPrint(' Data is set ---> $data');
     sharedPreferences!.setStringList("ToDoData", toDoList);
     Navigator.pop(context);
   }
@@ -64,8 +67,8 @@ class _TodoEnterDataState extends State<TodoEnterData> {
     setInstant();
 
     if (widget.toDoModel != null) {
-      titlecontroller.text = widget.toDoModel!.title!;
-      discriptioncontroller.text = widget.toDoModel!.discription!;
+      titleController.text = widget.toDoModel!.title!;
+      descriptionController.text = widget.toDoModel!.description!;
       time = widget.toDoModel!.time!;
     }
     super.initState();
@@ -75,7 +78,6 @@ class _TodoEnterDataState extends State<TodoEnterData> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
         elevation: 0,
         title: const Text(
           "Add Task",
@@ -91,67 +93,84 @@ class _TodoEnterDataState extends State<TodoEnterData> {
             vertical: MediaQuery.of(context).size.height / 80,
             horizontal: MediaQuery.of(context).size.height / 70,
           ),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            padding: EdgeInsets.all(15),
-            children: [
-              AppTextField(
-                hintText: 'Enter Title',
-                controller: titlecontroller,
-                minAndMaxLine: null,
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 50,
-              ),
-              AppTextField(
-                hintText: 'Description',
-                minAndMaxLine: 10,
-                controller: discriptioncontroller,
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height / 50),
-              GestureDetector(
-                  child: Container(
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                    ),
-                    child: Text(
-                      time.isNotEmpty ? time : AppString.selectedTime,
-                      style: TextStyle(
-                        color: time.isNotEmpty ? Colors.black : Colors.grey.shade700,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  onTap: () async {
-                    TimeOfDay? selectTime = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                    );
-                    if (selectTime != null) {
-                      debugPrint(selectTime.format(context));
-                      time = selectTime.format(context);
-                      setState(() {});
-                    }
-                  }),
-              SizedBox(height: MediaQuery.of(context).size.height / 50),
-              SizedBox(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height / 15,
-                child: ElevatedButton(
-                  style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Colors.black),
-                  ),
-                  onPressed: () {
-                    setdata();
-                  },
-                  child: const Text("Add Task"),
+          child: Form(
+            onChanged: () {
+              setState(() {});
+            },
+            key: formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              padding: const EdgeInsets.all(15),
+              children: [
+                AppTextField(
+                  validator: (value) => value!.isValidName() ? null : "Please Enter Title",
+                  hintText: 'Enter Title',
+                  controller: titleController,
+                  minAndMaxLine: null,
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 50,
+                ),
+                AppTextField(
+                  hintText: 'Description',
+                  minAndMaxLine: 10,
+                  controller: descriptionController,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 1),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: AppColors.materialColor),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        time.isNotEmpty ? time : AppString.selectedTime,
+                        style: TextStyle(
+                          color: time.isNotEmpty ? Colors.black : Colors.grey.shade700,
+                          fontSize: 16,
+                        ),
+                      ),
+                      IconButton(
+                          icon: const Icon(Icons.alarm),
+                          onPressed: () async {
+                            TimeOfDay? selectTime = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                            );
+                            if (selectTime != null) {
+                              debugPrint(selectTime.format(context));
+                              time = selectTime.format(context);
+                              setState(() {});
+                            }
+                          }),
+                    ],
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
+                SizedBox(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height / 15,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      backgroundColor: MaterialStatePropertyAll(AppColors.materialColor),
+                    ),
+                    onPressed: () {
+                      setData();
+                    },
+                    child: const Text("Add Task"),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

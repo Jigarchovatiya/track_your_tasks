@@ -1,8 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:todo_app/res/constant/app_assets.dart';
-import 'package:todo_app/view/home_screen.dart';
+import 'package:todo_app/res/constant/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -13,39 +11,43 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-  void initState() {
-    super.initState();
-    Timer(
-      const Duration(seconds: 4),
-      () => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      ),
-    );
-  }
+  // void initState() {
+  //   super.initState();
+  //   Timer(
+  //     const Duration(seconds: 4),
+  //     () => Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => const HomeScreen(),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: const Color(0xFF000000),
+      backgroundColor: AppColors.splashBg,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
-              child: Image.asset(AppAssets.logo),
+              child: Image.asset(
+                AppAssets.logo,
+                height: height / 3,
+              ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height / 50),
+            SizedBox(height: height / 50),
             const Center(
               child: Text(
-                "Todo List",
+                "Track your Tasks",
                 style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 35,
+                  color: AppColors.logoText,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 30,
                 ),
               ),
             ),
