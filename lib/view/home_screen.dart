@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo_app/model/to_do_model.dart';
 import 'package:todo_app/res/constant/app_string.dart';
 import 'package:todo_app/view/todo_enter_data.dart';
 import 'package:todo_app/view/todo_tile.dart';
+
+import '../data/model/to_do_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -63,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.black,
         elevation: 0,
-        title: AppString.homePageTitle,
+        title: Text(AppString.homePageTitle),
       ),
       body: toDoModel.isEmpty
           ? Center(

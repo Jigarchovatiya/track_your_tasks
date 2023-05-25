@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:todo_app/res/constant/app_images.dart';
+import 'package:todo_app/res/constant/app_assets.dart';
 import 'package:todo_app/view/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -35,7 +35,9 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(child: AppImages.splashScreen),
+            Center(
+              child: Image.asset(AppAssets.logo),
+            ),
             SizedBox(height: MediaQuery.of(context).size.height / 50),
             const Center(
               child: Text(

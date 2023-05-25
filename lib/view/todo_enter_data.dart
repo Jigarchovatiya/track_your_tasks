@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo_app/model/to_do_model.dart';
-import 'package:todo_app/res/common/app_text_feild.dart';
+import 'package:todo_app/res/common/app_text_field.dart';
 import 'package:todo_app/res/constant/app_string.dart';
+
+import '../data/model/to_do_model.dart';
 
 class TodoEnterData extends StatefulWidget {
   final ToDoModel? toDoModel;
